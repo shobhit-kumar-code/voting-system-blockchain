@@ -5,7 +5,7 @@ This project is about a voting system that overcomes the drawbacks of the curren
 - Simple and paperless candidate and voter registration.
 - Easy registration for overseas voters and voting from any device with an internet connection, once acceptable proofs are provided.
 - Additional transparency in the voting process - Criminal records and all forms or violence, vandalism and other activities to be projected.
-- Provide a score rating for each individual based on their records - both good and bad, over a given time frame for easier decision making
+- Provide a score rating for each candidate based on their records - both good and bad, over a given time frame for easier decision making
 - Easy access for citizens to view details about all candidates at a single place to make informed choices.
 - Vote for a particular constituency from any polling booth in the nation. Reduces the need to be physically present near the registered polling booth to vote.
 - Use common identification numbers like AADHAR and SSN to eliminate the possibility of voters voting more than once across districts and states
