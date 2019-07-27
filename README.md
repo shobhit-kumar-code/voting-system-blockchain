@@ -1,5 +1,5 @@
 # voting-system-blockchain
-Voting is a very important part of every democracy. It helps the citizens choose a leader to represent themselves in the government. Elections take place at various levels for the different levels of government. However, the current system of voting has several drawbacks and issues; voter turnouts are low, corruption exists and people do not end up voting the person that they truly want to vote for.
+Voting is a very important part of every democracy. It helps the citizens choose a leader to represent themselves in the government. Elections take place at various levels for the different levels of government. However, the current system of voting has several drawbacks and issues; voter turnouts are low, corruption exists and people do not end up voting for the person that they truly want to vote.
 This project is about a voting system that overcomes the drawbacks of the current scenario and develops further on the advantages of the current system of voting in a country like India. The power of technology and blockchain is used to make the system faster, efficient, cleaner and much more simple.
 ## Highlights
 - Simple and paperless candidate and voter registration.
