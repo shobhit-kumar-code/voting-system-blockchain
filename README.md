@@ -4,6 +4,7 @@ This project is about a voting system that overcomes the drawbacks of the curren
 ## Highlights
 - Simple and paperless candidate and voter registration.
 - Additional transparency in the voting process - Criminal records and all forms or violence, vandalism and other activities to be projected.
+- Provide a score rating for each individual based on their records - both good and bad, over a given time frame for easier decision making
 - Vote for a particular constituency from any polling booth in the nation. Reduces the need to be physically present near the registered polling booth to vote.
 - Immediate polling results.
 - Easy access for citizens to view details about all candidates at a single place to make informed choices.
