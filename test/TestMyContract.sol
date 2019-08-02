@@ -11,8 +11,5 @@ contract TestMyContract {
         m.set(1000);
         Assert.equal(value,1000,"Not equal");
     }
-  
-
-
 
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Flask Parent Template</title>
+    <link rel="stylesheet" href="{{ url_for('static',    filename='css/template.css') }}">
+    <style>
+    .but1{
+      background-color: #008CBA; /* Green */
+    border: none;
+    align-items: center;
+    /* position: absolute; */
+    color: white;
+    padding: 15px 32px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    /* margin-right:10%;  */
+    margin-left:35%;
+  
+    }
+    .but{
+      background-color: #008CBA; /* Green */
+    border: none;
+    align-items: center;
+    /* position: absolute; */
+    color: white;
+    padding: 15px 32px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right:20%;
+    margin-left: 10%; 
+    
+  
+    }
+    
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container" style="align-content: center;">
+        <!-- <h1 class="logo" style="text-align:center">Amazon Search Results</h1>
+        
+
+          <a href="{{ url_for('about') }}" class="but1"  >About</a>
+          <a href="{{ url_for('home') }}" class="but" >Home</a> -->
+          
+        
+      </div>
+    </header>
+{% block content %}
+{% endblock %}
+ </body>
+</html>

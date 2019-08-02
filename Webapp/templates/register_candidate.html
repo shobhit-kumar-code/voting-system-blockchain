@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Candidate registration form</title>
+    </head>
+    <body>
+        <form action="http://localhost:5000/registration_complete" method = "POST">
+            <label>Enter AADHAR ID:<input type="text" name="uid"></br></label>
+            <label>Enter First Name:<input type="text" name="fname"></br></label>
+            <label>Enter Last Name:<input type="text" name="lname"></br></label>
+            <label>Enter Age:<input type="number" name="age"></br></label>
+            <label>Enter Permanent Address:<br><textarea cols="15" rows="5" name="address"></textarea></br></label>
+            <label>Upload Photograph<br/><input type="file" name="photo"><br></br></label>
+            <label>Enter Criminal Recordings:<br><textarea cols="15" rows="5" name="criminal"></textarea></br></label>
+            <label><input type="submit"></label>
+        </form>
+    </body>
+</html>
