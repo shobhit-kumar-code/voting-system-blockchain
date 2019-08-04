@@ -37,11 +37,18 @@
                   <table class="table table-bordered">
                       {% for key, value in result.items() %}
                           <tr>
-                              <th> {{ key }} </th>
+                              {%if key!='photo' %}
+                              <th> {{ mapping[key] }} </th>
                               <td> {{ value }} </td>
+                              {% endif %}
                           </tr>
                       {% endfor %}
-{#                    <thead>#}
+                      <tr>
+                          <th> Uploaded Image </th>
+                        <td><img src="{{photo}}" alt="FILE NOT FOUND"></td>
+                      </tr>
+
+<!-- {#                    <thead>#}
 {#                      <tr>#}
 {#                        <th>#}
 {#                          UID#}
@@ -194,7 +201,7 @@
 {#                          June 16, 2015#}
 {#                        </td>#}
 {#                      </tr>#}
-{#                    </tbody>#}
+{#                    </tbody>#} -->
                   </table>
                 </div>
               </div>
@@ -202,15 +209,14 @@
         </div>
    </div>
 
-
-{#      <table border = 1>#}
+<!-- {#      <table border = 1>#}
 {#         {% for key, value in result.items() %}#}
 {#            <tr>#}
 {#               <th> {{ key }} </th>#}
 {#               <td> {{ value }} </td>#}
 {#            </tr>#}
 {#         {% endfor %}#}
-{#      </table>#}
+{#      </table>#} -->
 
         <script src="../static/PurpleAdmin-Free-Admin-Template-master/vendors/js/vendor.bundle.base.js"></script>
         <script src="../static/PurpleAdmin-Free-Admin-Template-master/vendors/js/vendor.bundle.addons.js"></script>

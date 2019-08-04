@@ -36,7 +36,8 @@
                             <p class="card-description">
                                 Voter Registration
                             </p>
-                            <form class="forms-sample" action="http://localhost:5000/registration_complete_voter" method = "POST">
+                            <form class="forms-sample" action="http://localhost:5000/registration_complete_voter" 
+                                enctype = "multipart/form-data" method = "POST">
                                 <div class="form-group">
                                     <label for="AadharNumber">Aadhar ID</label>
                                     <input type="text" class="form-control" id="uid" name = "uid" placeholder="Aadhar ID">

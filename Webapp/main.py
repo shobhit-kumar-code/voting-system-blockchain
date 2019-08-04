@@ -3,6 +3,7 @@ import os
 import json
 from flask import Flask, render_template, request
 import sys
+from werkzeug import secure_filename
 from vote_system import Voting
 # sys.path.append('D:\EmotionDetection')
 # print(sys.path)
@@ -25,23 +26,47 @@ def register_voter():
 
 @app.route("/registration_complete_candidate",methods = ['POST', 'GET'])
 def registration_complete_candidate():
+    mapping={
+            "uid":"Unique ID",
+            "fname": "First Name",
+            "lname": "Last Name",
+            "email": "Email ID",
+            "age":"Age",
+            "address":"Permanent Address",
+            "photo": "Photo Upload",
+            "criminal":"Criminal Records"
+                      }
     if request.method=="POST":
       result=request.form
-      print(result['uid'],result['fname'],result['lname'],result['age'],
-          result['address'],result['photo'],result['criminal'])
+      file_handler=request.files['photo']
+      file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
       obj=Voting()
       if obj.register_candidate(result['uid'],result['fname'],result['lname'],result['age'],
-          result['address'],result['photo'],result['criminal']) ==True:
-            return flask.render_template("registration_complete.html",result=result)
+          result['address'],str(file_handler.filename),result['criminal']) ==True:
+            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
 
 @app.route("/registration_complete_voter",methods = ['POST', 'GET'])
 def registration_complete_voter():
+    mapping={
+        "uid":"Unique ID",
+        "fname": "First Name",
+        "lname": "Last Name",
+        "email": "Email ID",
+        "age":"Age",
+        "address":"Permanent Address",
+        "photo": "Photo Upload",
+        "criminal":"Criminal Records"
+                    }
     if request.method=="POST":
       result=request.form
+      file_handler=request.files['photo']
+      file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
+
       obj=Voting()
+      
       if obj.register_voter(result['uid'],result['fname'],result['lname'],result['age'],
-          result['address'],result['photo']) ==True:
-            return flask.render_template("registration_complete.html",result=result)
+          result['address'],str(file_handler.filename)) ==True:
+            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
 if __name__ == "__main__":
 
     app.run(debug=True)

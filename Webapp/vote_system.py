@@ -1,5 +1,7 @@
 import pymongo
 import re
+import os
+import base64
 class Voting:
     uid,fname,lname,age,address,photo,criminal_records=('',)*7
     def __init__(self):
@@ -39,12 +41,22 @@ class Voting:
         # import pdb; pdb.set_trace()
         myclient = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = myclient["codefundo"]
+        with open(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo),"rb") as img:
+            encoded_string = base64.b64encode(img.read())
         if category=="candidate":
             mycol=mydb['cand_reg']
             mycol.insert_one({"UID":self.uid,"First Name":self.fname,"Last Name":self.lname,"Age":self.age,"Address":self.address,
-                        "Photo":self.photo,"Criminal":self.criminal_records})
+                        "Photo":encoded_string,"Criminal":self.criminal_records})
         else:
             mycol=mydb['vote_reg']
             mycol.insert_one({"UID":self.uid,"First Name":self.fname,"Last Name":self.lname,"Age":self.age,"Address":self.address,
-                        "Photo":self.photo})
+                        "Photo":encoded_string})
         return True
+    # def retrieve_image(request): USE THIS TO RETRIEVE THE IMAGE FROM MONGO
+    #     data = db.database_name.find()
+    #     data1 = json.loads(dumps(data))
+    #     img = data1[0]
+    #     img1 = img['image']
+    #     decode=img1.decode()
+    #     img_tag = '<img alt="sample" src="data:image/png;base64,{0}">'.format(decode)
+    #     return HttpResponse(img_tag)
