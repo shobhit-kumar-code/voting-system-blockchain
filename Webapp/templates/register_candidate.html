@@ -1,18 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Candidate registration form</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Candidate Registration Form</title>
+        <!-- plugins:css -->
+        <link rel="stylesheet" href="../static/PurpleAdmin-Free-Admin-Template-master/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="../static/PurpleAdmin-Free-Admin-Template-master/vendors/css/vendor.bundle.base.css">
+        <!-- endinject -->
+        <!-- inject:css -->
+        <link rel="stylesheet" href="../static/PurpleAdmin-Free-Admin-Template-master/css/style.css">
+        <!-- endinject -->
+        <link rel="shortcut icon" href="../static/PurpleAdmin-Free-Admin-Template-master/images/favicon.png" />
     </head>
+
     <body>
-        <form action="http://localhost:5000/registration_complete_candidate" method = "POST">
-            <label>Enter AADHAR ID:<input type="text" name="uid"></br></label>
-            <label>Enter First Name:<input type="text" name="fname"></br></label>
-            <label>Enter Last Name:<input type="text" name="lname"></br></label>
-            <label>Enter Age:<input type="number" name="age"></br></label>
-            <label>Enter Permanent Address:<br><textarea cols="15" rows="5" name="address"></textarea></br></label>
-            <label>Upload Photograph<br/><input type="file" name="photo"><br></br></label>
-            <label>Enter Criminal Recordings:<br><textarea cols="15" rows="5" name="criminal"></textarea></br></label>
-            <label><input type="submit"></label>
-        </form>
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">
+                  Forms
+                </h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Basic elements</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Basic form elements</h4>
+                            <p class="card-description">
+                                Candidate Registration
+                            </p>
+                            <form class="forms-sample" action="http://localhost:5000/registration_complete_candidate" method = "POST">
+                                <div class="form-group">
+                                    <label for="AadharNumber">Aadhar ID</label>
+                                    <input type="text" class="form-control" id="uid" name = "uid" placeholder="Aadhar ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="FirstName">First Name</label>
+                                    <input type="text" class="form-control" id="fname" name = "fname" placeholder="First Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="LastName">Last Name</label>
+                                    <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="EmailAddress">Email address</label>
+                                    <input type="email" class="form-control" id="email" name ="email" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Age">Age</label>
+                                    <input type="text" class="form-control" id="age" name ="age" placeholder="Age">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="SelectGender">Gender</label>
+                                    <select class="form-control" id="Gender">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="PermanentAddress">Permanent Address</label>
+                                    <textarea class="form-control" id="address" name="address" rows="4"></textarea>
+                                </div>
+                                <div class="form-group">
+                                <label>Upload Photograph</label>
+{#                                    <label>Upload Photograph<br/><input type="file" name="photo"><br></br></label>#}
+                                    <input type="file" name = "photo" class="file-upload-default">
+                                    <div class="input-group col-xs-12">
+                                    <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-gradient-primary" type="button">Upload</button>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="CriminalRecordings">Criminal Recordings</label>
+                                    <textarea class="form-control" id="criminal" name = "criminal" rows="4"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
+                                <button class="btn btn-light">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{#        <form action="http://localhost:5000/registration_complete_candidate" method = "POST">#}
+{#            <label>Enter AADHAR ID:<input type="text" name="uid"></br></label>#}
+{#            <label>Enter First Name:<input type="text" name="fname"></br></label>#}
+{#            <label>Enter Last Name:<input type="text" name="lname"></br></label>#}
+{#            <label>Enter Age:<input type="number" name="age"></br></label>#}
+{#            <label>Enter Permanent Address:<br><textarea cols="15" rows="5" name="address"></textarea></br></label>#}
+{#            <label>Upload Photograph<br/><input type="file" name="photo"><br></br></label>#}
+{#            <label>Enter Criminal Recordings:<br><textarea cols="15" rows="5" name="criminal"></textarea></br></label>#}
+{#            <label><input type="submit"></label>#}
+{#        </form>#}
+
+        <!-- plugins:js -->
+        <script src="../static/PurpleAdmin-Free-Admin-Template-master/vendors/js/vendor.bundle.base.js"></script>
+        <script src="../static/PurpleAdmin-Free-Admin-Template-master/vendors/js/vendor.bundle.addons.js"></script>
+        <!-- endinject -->
+        <!-- Plugin js for this page-->
+        <!-- End plugin js for this page-->
+        <!-- inject:js -->
+        <script src="../static/PurpleAdmin-Free-Admin-Template-master/js/off-canvas.js"></script>
+        <script src="../static/PurpleAdmin-Free-Admin-Template-master/js/misc.js"></script>
+        <!-- endinject -->
+        <!-- Custom js for this page-->
+        <script src="../static/PurpleAdmin-Free-Admin-Template-master/js/dashboard.js"></script>
+         <script src="../static/PurpleAdmin-Free-Admin-Template-master/js/file-upload.js"></script>
+
+        <!-- End custom js for this page-->
     </body>
 </html>
