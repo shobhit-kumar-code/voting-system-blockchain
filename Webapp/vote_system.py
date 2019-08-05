@@ -2,6 +2,7 @@ import pymongo
 import re
 import os
 import base64
+from detect import Detector
 class Voting:
     uid,fname,lname,age,address,photo,criminal_records=('',)*7
     def __init__(self):
@@ -19,7 +20,10 @@ class Voting:
         
         #make call to blockchain registercandidate function
     def validate(self,category):
-        # import pdb; pdb.set_trace()
+        ###########################USE THIS ONLY IF YOU HAVE SUPPORT FOR IT ELSE BUZZ OFF#############################
+        # obj=Detector()
+        # if obj.detection(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo))!=True:
+        #     return False
         if category=="candidate":
             if re.match(r'\b\d{12}\b',self.uid) and int(self.age)>=25 and self.address!="default" and self.fname!="default" and self.lname!="default" and self.photo!="pic.jpg":
                 return True
@@ -41,7 +45,7 @@ class Voting:
         # import pdb; pdb.set_trace()
         myclient = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = myclient["codefundo"]
-        with open(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo),"rb") as img:
+        with open( os.path.abspath(os.path.join("\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo)),"rb") as img:
             encoded_string = base64.b64encode(img.read())
         if category=="candidate":
             mycol=mydb['cand_reg']
