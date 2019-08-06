@@ -1,0 +1,3 @@
+{
+    "ImgPath" : "G:\\Romu\\Code Fun Do\\Webapp\\static\\PurpleAdmin-Free-Admin-Template-master\\images"
+}

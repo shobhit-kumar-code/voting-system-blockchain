@@ -5,11 +5,15 @@ from flask import Flask, render_template, request
 import sys
 from werkzeug import secure_filename
 from vote_system import Voting
+import pdb
 # sys.path.append('D:\EmotionDetection')
 # print(sys.path)
 # from Mails import Mail
 
 app = flask.Flask(__name__,static_url_path='/static')
+fd = open("config.txt")
+data = json.load(fd)
+
 
 @app.route("/")
 def home():
@@ -39,7 +43,8 @@ def registration_complete_candidate():
     if request.method=="POST":
       result=request.form
       file_handler=request.files['photo']
-      file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
+      #file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
+      file_handler.save(os.path.join(data["ImgPath"],secure_filename(file_handler.filename)))
       obj=Voting()
       if obj.register_candidate(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],str(file_handler.filename),result['criminal']) ==True:
@@ -60,10 +65,13 @@ def registration_complete_voter():
     if request.method=="POST":
       result=request.form
       file_handler=request.files['photo']
-      file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
+      #file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
+      file_handler.save(os.path.join(data["ImgPath"], secure_filename(file_handler.filename)))
 
       obj=Voting()
-      
+
+      print(result['uid'],result['fname'],result['lname'],result['age'],
+          result['address'],str(file_handler.filename))
       if obj.register_voter(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],str(file_handler.filename)) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
