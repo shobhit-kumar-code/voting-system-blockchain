@@ -6,6 +6,7 @@ import sys
 from werkzeug import secure_filename
 from vote_system import Voting
 import pdb
+import pymongo
 # sys.path.append('D:\EmotionDetection')
 # print(sys.path)
 # from Mails import Mail
@@ -44,7 +45,7 @@ def registration_complete_candidate():
       result=request.form
       file_handler=request.files['photo']
       #file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
-      file_handler.save(os.path.join(data["ImgPath"],secure_filename(file_handler.filename)))
+      file_handler.save(os.path.join(data["ImgPath"],secure_filename(result['uid']+".jpg")))
       obj=Voting()
       if obj.register_candidate(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],str(file_handler.filename),result['criminal']) ==True:
@@ -75,6 +76,29 @@ def registration_complete_voter():
       if obj.register_voter(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],str(file_handler.filename)) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
+@app.route("/cast_vote")
+def cast_vote():
+  myclient=pymongo.MongoClient("mongodb://localhost:27017/")
+  mydb = myclient["codefundo"]
+  mycol=mydb['cand_reg']
+  result=[]
+  for x in mycol.find():
+    result.append(x)
+  # import pdb; pdb.set_trace()
+  return flask.render_template("cast_vote.html",result=result)
+@app.route("/voted",methods = ['POST', 'GET'])
+def voted():
+  if request.method=="POST":
+    result=request.form
+    whom=result['vote']
+    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    mydb = myclient["codefundo"]
+    mycol=mydb['cand_reg']
+    current_votes=mycol.find_one({"UID":whom})['vote_count']
+    mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":(current_votes+1)}})
+    # import pdb; pdb.set_trace()
+    return flask.render_template("thank_you.html",result=mycol.find_one({"UID":whom}))
+
 if __name__ == "__main__":
 
     app.run(debug=True)
