@@ -38,6 +38,8 @@ def registration_complete_candidate():
             "email": "Email ID",
             "age":"Age",
             "address":"Permanent Address",
+            "gender":"Gender",
+            "wardno": "Ward No",
             "photo": "Photo Upload",
             "criminal":"Criminal Records"
                       }
@@ -48,7 +50,7 @@ def registration_complete_candidate():
       file_handler.save(os.path.join(data["ImgPath"],secure_filename(result['uid']+".jpg")))
       obj=Voting()
       if obj.register_candidate(result['uid'],result['fname'],result['lname'],result['age'],
-          result['address'],str(file_handler.filename),result['criminal']) ==True:
+          result['address'],result['gender'],result['wardno'],str(file_handler.filename),result['criminal']) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
 
 @app.route("/registration_complete_voter",methods = ['POST', 'GET'])
@@ -60,6 +62,8 @@ def registration_complete_voter():
         "email": "Email ID",
         "age":"Age",
         "address":"Permanent Address",
+        "gender":"Gender",
+        "wardno": "Ward No",
         "photo": "Photo Upload",
         "criminal":"Criminal Records"
                     }
@@ -74,7 +78,7 @@ def registration_complete_voter():
       print(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],str(file_handler.filename))
       if obj.register_voter(result['uid'],result['fname'],result['lname'],result['age'],
-          result['address'],str(file_handler.filename)) ==True:
+          result['address'],result['gender'],result['wardno'],str(file_handler.filename)) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
 @app.route("/cast_vote")
 def cast_vote():
@@ -95,7 +99,7 @@ def voted():
     mydb = myclient["codefundo"]
     mycol=mydb['cand_reg']
     current_votes=mycol.find_one({"UID":whom})['vote_count']
-    mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":(current_votes+1)}})
+    mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":1}})
     # import pdb; pdb.set_trace()
     return flask.render_template("thank_you.html",result=mycol.find_one({"UID":whom}))
 
