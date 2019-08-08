@@ -59,7 +59,7 @@ class Voting:
         if category=="candidate":
             mycol=mydb['cand_reg']
             mycol.insert_one({"UID":self.uid,"First Name":self.fname,"Last Name":self.lname,"Age":self.age,"Address":self.address,
-                        "Gender":self.gender,"Ward No":self.ward,"Photo":encoded_string,"Criminal":self.criminal_records,"vote_count":1})
+                        "Gender":self.gender,"Ward No":self.ward,"Photo":encoded_string,"Criminal":self.criminal_records,"vote_count":0})
         else:
             mycol=mydb['vote_reg']
             mycol.insert_one({"UID":self.uid,"First Name":self.fname,"Last Name":self.lname,"Age":self.age,"Address":self.address,
