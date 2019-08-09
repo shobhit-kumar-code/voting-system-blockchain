@@ -32,6 +32,13 @@ def register_voter():
 @app.route("/register_voter_overseas")
 def register_voter_overseas():
     return flask.render_template("register_voter_overseas.html")
+@app.route("/register")
+def register():
+    return flask.render_template("register.html")
+
+@app.route("/login")
+def login():
+    return flask.render_template("login.html")
 
 @app.route("/registration_complete_candidate",methods = ['POST', 'GET'])
 def registration_complete_candidate():
