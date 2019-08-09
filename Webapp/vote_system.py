@@ -6,6 +6,7 @@ import pdb
 import json
 from ocr import OCR
 #from detect import Detector
+from face_detect import Face_Detector
 fd = open("config.txt")
 data = json.load(fd)
 class Voting:
@@ -28,9 +29,9 @@ class Voting:
         #make call to blockchain registercandidate function
     def validate(self,category):
         ###########################USE THIS ONLY IF YOU HAVE SUPPORT FOR IT ELSE BUZZ OFF#############################
-        # obj=Detector()
-        # if obj.detection(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo))!=True:
-        #     return False
+        obj=Face_Detector()
+        if obj.detect(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo))!=True:
+            return False
         #pdb.set_trace()
         if category=="candidate":
             if re.match(r'\b\d{12}\b',self.uid) and int(self.age)>=25 and self.address!="default" and self.fname!="default" and self.lname!="default" and self.photo!="pic.jpg" and self.ward!=10000:
@@ -54,15 +55,16 @@ class Voting:
     def register_voter_overseas(self,uid,fname,lname,age,address,gender,ward,photo,visa):
         self.uid,self.fname,self.lname,self.age,self.address,self.photo,self.gender,self.ward,self.visa=uid,fname,lname,age,address,photo,gender,ward,visa
         path="D:\\codefundo\\Webapp\\static\\PurpleAdmin-Free-Admin-Template-master\\images\\"+self.visa
-        return (self.validate("voter_overseas") and self.register_db("voter_overseas") #and self.visa_verification(path)) run if dependencies satisfied
-##############################################################RUN THE ABOVE visa_verification only post dependency resolution
-######################################################################################################################
-########################################################################################################
+        return (self.validate("voter_overseas") and self.register_db("voter_overseas") )#and self.visa_verification(path)) run if dependencies satisfied
+        ##############################################################RUN THE ABOVE visa_verification only post dependency resolution
+        ######################################################################################################################
+        ########################################################################################################
 
         #make call to blockchain registervoter function
+
     def cast_vote(self,uid,fname,lname,vote_uid):
         #make call to blockchain cast_vote function with true for vote variable
-        pass
+        return
     def register_db(self,category):
         # import pdb; pdb.set_trace()
         myclient = pymongo.MongoClient("mongodb://localhost:27017/")
