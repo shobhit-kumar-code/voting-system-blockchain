@@ -1,0 +1,91 @@
+{
+  "ApplicationName": "rvVoting",
+  "DisplayName": "RV Voting",
+  "Description": "A blockchain powered voting application.",
+  "ApplicationRoles": [
+    {
+      "Name": "Candidate",
+      "Description": "A person contesting elections."
+    },
+    {
+      "Name": "Voter",
+      "Description": "A person eligible to cast votes"
+    }
+  ],
+  "Workflows": [
+    {
+      "Name": "voteCast",
+      "DisplayName": "Casting a Vote",
+      "Description": "A simple workflow to cast a vote",
+      "Initiators": [ "Candidate" ],
+      "StartState": "Request",
+      "Properties": [
+        {
+          "Name": "State",
+          "DisplayName": "State",
+          "Description": "Holds the state of the contract.",
+          "Type": {
+            "Name": "state"
+          }
+        },
+        {
+            "Name": "UID",
+            "DisplayName": "UID",
+            "Description": "Unique identifier.",
+            "Type": {
+              "Name": "string"
+            }
+        },
+        {
+          "Name": "VoteCount",
+          "DisplayName": "VoteCount",
+          "Description": "Number of votes.",
+          "Type": {
+            "Name": "int"
+          }
+        }
+      ],
+      "Constructor": {
+        "Parameters": [
+          {
+            "Name": "uid",
+            "Description": "Unique Identifier of a Candidate",
+            "DisplayName": "Candidate UID",
+            "Type": {
+              "Name": "string"
+            }
+          }
+        ]
+      },
+      "Functions": [
+        {
+          "Name": "CastVote",
+          "DisplayName": "CastVote",
+          "Description": "...",
+          "Parameters": [
+          ]
+        }
+      ],
+      "States": [
+        {
+          "Name": "Request",
+          "DisplayName": "Request",
+          "Description": "...",
+          "PercentComplete": 50,
+          "Value": 0,
+          "Style": "Success",
+          "Transitions": [
+              {
+              "AllowedRoles": ["Candidate","Voter"],
+              "AllowedInstanceRoles": [],
+              "Description": "...",
+              "Function": "CastVote",
+              "NextStates": [ "Request" ],
+              "DisplayName": "Send Response"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
