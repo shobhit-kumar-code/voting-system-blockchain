@@ -4,7 +4,9 @@ import os
 import base64
 import pdb
 import json
+from ocr import OCR
 #from detect import Detector
+from face_detect import Face_Detector
 fd = open("config.txt")
 data = json.load(fd)
 class Voting:
@@ -27,8 +29,8 @@ class Voting:
         #make call to blockchain registercandidate function
     def validate(self,category):
         ###########################USE THIS ONLY IF YOU HAVE SUPPORT FOR IT ELSE BUZZ OFF#############################
-        # obj=Detector()
-        # if obj.detection(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo))!=True:
+        # obj=Face_Detector()
+        # if obj.detect(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo))!=True:
         #     return False
         #pdb.set_trace()
         if category=="candidate":
@@ -41,13 +43,28 @@ class Voting:
                 return True
             else:
                 return False
+    def visa_verification(self,path):
+        
+        #ocr based verif
+        obj=OCR()
+        return obj.recognise(path)
+        # pass
     def register_voter(self,uid,fname,lname,age,address,gender,ward,photo):
         self.uid,self.fname,self.lname,self.age,self.address,self.photo,self.gender,self.ward=uid,fname,lname,age,address,photo,gender,ward
         return (self.validate("voter") and self.register_db("voter"))
+    def register_voter_overseas(self,uid,fname,lname,age,address,gender,ward,photo,visa):
+        self.uid,self.fname,self.lname,self.age,self.address,self.photo,self.gender,self.ward,self.visa=uid,fname,lname,age,address,photo,gender,ward,visa
+        path=data["ImgPath"]+self.visa
+        return (self.validate("voter_overseas") and self.register_db("voter_overseas") )#and self.visa_verification(path)) run if dependencies satisfied
+        ##############################################################RUN THE ABOVE visa_verification only post dependency resolution
+        ######################################################################################################################
+        ########################################################################################################
+
         #make call to blockchain registervoter function
+
     def cast_vote(self,uid,fname,lname,vote_uid):
         #make call to blockchain cast_vote function with true for vote variable
-        pass
+        return
     def register_db(self,category):
         # import pdb; pdb.set_trace()
         myclient = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -59,11 +76,15 @@ class Voting:
         if category=="candidate":
             mycol=mydb['cand_reg']
             mycol.insert_one({"UID":self.uid,"First Name":self.fname,"Last Name":self.lname,"Age":self.age,"Address":self.address,
-                        "Gender":self.gender,"Ward No":self.ward,"Photo":encoded_string,"Criminal":self.criminal_records,"vote_count":0})
-        else:
+                        "Gender":self.gender,"Ward No":self.ward,"Photo":encoded_string,"Criminal":self.criminal_records,"vote_count":1})
+        elif category=='voter':
             mycol=mydb['vote_reg']
             mycol.insert_one({"UID":self.uid,"First Name":self.fname,"Last Name":self.lname,"Age":self.age,"Address":self.address,
                         "Gender":self.gender,"Ward No":self.ward,"Photo":encoded_string})
+        else:
+            mycol=mydb['vote_reg']
+            mycol.insert_one({"UID":self.uid,"First Name":self.fname,"Last Name":self.lname,"Age":self.age,"Address":self.address,
+                        "Gender":self.gender,"Ward No":self.ward,"Photo":encoded_string,"Overseas Status":True})
         return True
     # def retrieve_image(request): USE THIS TO RETRIEVE THE IMAGE FROM MONGO
     #     data = db.database_name.find()

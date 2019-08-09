@@ -29,6 +29,9 @@ def register_candidate():
 def register_voter():
     return flask.render_template("register_voter.html")
 
+@app.route("/register_voter_overseas")
+def register_voter_overseas():
+    return flask.render_template("register_voter_overseas.html")
 @app.route("/register")
 def register():
     return flask.render_template("register.html")
@@ -59,7 +62,7 @@ def registration_complete_candidate():
       obj=Voting()
       if obj.register_candidate(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(file_handler.filename),result['criminal']) ==True:
-            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
+            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None)
 
 @app.route("/registration_complete_voter",methods = ['POST', 'GET'])
 def registration_complete_voter():
@@ -79,7 +82,7 @@ def registration_complete_voter():
       result=request.form
       file_handler=request.files['photo']
       #file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
-      file_handler.save(os.path.join(data["ImgPath"], secure_filename(file_handler.filename)))
+      file_handler.save(os.path.join(data["ImgPath"],secure_filename(result['uid']+".jpg")))
 
       obj=Voting()
 
@@ -87,7 +90,40 @@ def registration_complete_voter():
           result['address'],str(file_handler.filename))
       if obj.register_voter(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(file_handler.filename)) ==True:
-            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename)
+            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None)
+
+@app.route("/registration_complete_voter_overseas",methods = ['POST', 'GET'])
+def registration_complete_voter_overseas():
+    mapping={
+        "uid":"Unique ID",
+        "fname": "First Name",
+        "lname": "Last Name",
+        "email": "Email ID",
+        "age":"Age",
+        "address":"Permanent Address",
+        "gender":"Gender",
+        "wardno": "Ward No",
+        "photo": "Photo Upload",
+        "criminal":"Criminal Records",
+        "visa": "Visa Upload"
+                    }
+    if request.method=="POST":
+      result=request.form
+      file_handler=request.files['photo']
+      #file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
+      file_handler.save(os.path.join(data["ImgPath"], secure_filename(result['uid']+".jpg")))
+      fh=file_handler
+      file_handler=request.files['visa']
+      file_handler.save(os.path.join(data["ImgPath"], secure_filename(result['uid']+"_visa.jpg")))
+      obj=Voting()
+
+      print(result['uid'],result['fname'],result['lname'],result['age'],
+          result['address'],str(file_handler.filename))
+      if obj.register_voter_overseas(result['uid'],result['fname'],result['lname'],result['age'],
+          result['address'],result['gender'],result['wardno'],str(fh.filename),str(result['uid']+"_visa.jpg")) ==True:
+            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid']+".jpg"),visa="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid'])+"_visa.jpg")
+
+
 @app.route("/cast_vote")
 def cast_vote():
   myclient=pymongo.MongoClient("mongodb://localhost:27017/")
