@@ -146,6 +146,9 @@ def voted():
     mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":1}})
     # import pdb; pdb.set_trace()
     return flask.render_template("thank_you.html",result=mycol.find_one({"UID":whom}))
+@app.route("/ext")
+def ext():
+    return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/v2.0/authorize?client_id=c62087b9-cfed-4105-a9c2-4fd3953ceed5&response_type=id_token&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fshobhit&response_mode=fragment&scope=openid&state=12345&nonce=678910")
 
 if __name__ == "__main__":
 

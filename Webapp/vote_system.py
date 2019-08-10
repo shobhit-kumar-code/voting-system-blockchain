@@ -4,7 +4,7 @@ import os
 import base64
 import pdb
 import json
-from ocr import OCR
+from visa_verif import OCR
 #from detect import Detector
 from face_detect import Face_Detector
 fd = open("config.txt")
@@ -55,7 +55,7 @@ class Voting:
     def register_voter_overseas(self,uid,fname,lname,age,address,gender,ward,photo,visa):
         self.uid,self.fname,self.lname,self.age,self.address,self.photo,self.gender,self.ward,self.visa=uid,fname,lname,age,address,photo,gender,ward,visa
         path=data["ImgPath"]+self.visa
-        return (self.validate("voter_overseas") and self.register_db("voter_overseas") )#and self.visa_verification(path)) run if dependencies satisfied
+        return (self.validate("voter_overseas") and self.register_db("voter_overseas") and self.visa_verification(path))# run if dependencies satisfied
         ##############################################################RUN THE ABOVE visa_verification only post dependency resolution
         ######################################################################################################################
         ########################################################################################################
