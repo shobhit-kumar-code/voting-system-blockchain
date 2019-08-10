@@ -6,6 +6,7 @@ import sys
 from werkzeug import secure_filename
 from vote_system import Voting
 import pdb
+import cv2
 import pymongo
 # sys.path.append('D:\EmotionDetection')
 # print(sys.path)
@@ -124,6 +125,28 @@ def registration_complete_voter_overseas():
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid']+".jpg"),visa="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid'])+"_visa.jpg")
 
 
+@app.route("/cast_vote_home")
+def cast_vote_home():
+  cap = cv2.VideoCapture(0)
+  obj=Voting()
+  import time
+  while True:
+    time.sleep(3)
+    ret, frame = cap.read()
+    cv2.imwrite("img.jpg",frame)
+    if obj.check_emotion():
+      myclient=pymongo.MongoClient("mongodb://localhost:27017/")
+      mydb = myclient["codefundo"]
+      mycol=mydb['cand_reg']
+      result=[]
+      for x in mycol.find():
+        result.append(x)
+      # import pdb; pdb.set_trace()
+      return flask.render_template("cast_vote.html",result=result)
+    else:
+        return "Emotional Issue"
+    break
+
 @app.route("/cast_vote")
 def cast_vote():
   myclient=pymongo.MongoClient("mongodb://localhost:27017/")
@@ -146,9 +169,7 @@ def voted():
     mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":1}})
     # import pdb; pdb.set_trace()
     return flask.render_template("thank_you.html",result=mycol.find_one({"UID":whom}))
-@app.route("/ext")
-def ext():
-    return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/v2.0/authorize?client_id=c62087b9-cfed-4105-a9c2-4fd3953ceed5&response_type=id_token&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fshobhit&response_mode=fragment&scope=openid&state=12345&nonce=678910")
+
 
 if __name__ == "__main__":
 

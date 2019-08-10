@@ -5,6 +5,7 @@ import base64
 import pdb
 import json
 from visa_verif import OCR
+from emotion_detect import Emotion_Detector
 #from detect import Detector
 from face_detect import Face_Detector
 fd = open("config.txt")
@@ -43,6 +44,10 @@ class Voting:
                 return True
             else:
                 return False
+    def check_emotion(self):
+        obj=Emotion_Detector()
+        image=open("img.jpg","rb")
+        return obj.detect(image)
     def visa_verification(self,path):
         
         #ocr based verif
