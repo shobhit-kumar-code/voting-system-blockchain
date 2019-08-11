@@ -12,7 +12,7 @@ import pymongo
 # sys.path.append('D:\EmotionDetection')
 # print(sys.path)
 # from Mails import Mail
-
+uri = "mongodb://votemadolai:RIAaSAOPHxWkFP4tfmgA0R9vz31GWMSS2Pz3S4WkwZyVAQa5gfocwAxhDijFz3g0X0EIyd0gCjcncdo8d8HsUA==@votemadolai.documents.azure.com:10255/?ssl=true&replicaSet=globaldb"
 app = flask.Flask(__name__,static_url_path='/static')
 fd = open("config.txt")
 data = json.load(fd)
@@ -141,7 +141,7 @@ def cast_vote_home():
     ret, frame = cap.read()
     cv2.imwrite("img.jpg",frame)
     if obj.check_emotion():
-      myclient=pymongo.MongoClient("mongodb://localhost:27017/")
+      myclient=pymongo.MongoClient(uri)
       mydb = myclient["codefundo"]
       mycol=mydb['cand_reg']
       result=[]
@@ -156,7 +156,7 @@ def cast_vote_home():
 
 @app.route("/cast_vote")
 def cast_vote():
-  myclient=pymongo.MongoClient("mongodb://localhost:27017/")
+  myclient=pymongo.MongoClient(uri)
   mydb = myclient["codefundo"]
   mycol=mydb['cand_reg']
   result=[]
@@ -171,7 +171,7 @@ def voted():
   if request.method=="POST":
     result=request.form
     whom=result['vote']
-    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myclient = pymongo.MongoClient(uri)
     mydb = myclient["codefundo"]
     mycol=mydb['cand_reg']
     current_votes=mycol.find_one({"UID":whom})['vote_count']

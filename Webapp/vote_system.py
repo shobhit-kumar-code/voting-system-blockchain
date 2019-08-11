@@ -72,8 +72,15 @@ class Voting:
         return
     def register_db(self,category):
         # import pdb; pdb.set_trace()
-        myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-        mydb = myclient["codefundo"]
+        
+        # myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+        # mydb = myclient["codefundo"]
+
+
+        uri = "mongodb://votemadolai:RIAaSAOPHxWkFP4tfmgA0R9vz31GWMSS2Pz3S4WkwZyVAQa5gfocwAxhDijFz3g0X0EIyd0gCjcncdo8d8HsUA==@votemadolai.documents.azure.com:10255/?ssl=true&replicaSet=globaldb"
+        myclient = pymongo.MongoClient(uri)
+        mydb=myclient.codefundo
+        # import pdb; pdb.set_trace()
         #with open( os.path.abspath(os.path.join("\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",self.photo)),"rb") as img:
         #with open(os.path.abspath(os.path.join("\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images", self.photo)),"rb") as img:
         with open(os.path.join(data["ImgPath"],self.photo),"rb") as img:
