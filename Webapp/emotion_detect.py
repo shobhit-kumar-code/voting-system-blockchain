@@ -39,11 +39,12 @@ class Emotion_Detector:
         response = requests.post(face_api_url, params=params, headers=headers, data=image_data)
         response.raise_for_status()
         faces = response.json() 
+        if len(faces)!=1:
+            return False
         # import pdb; pdb.set_trace()
         emotion_map=faces[0]['faceAttributes']['emotion']
         max,emotion=0,''
-        if len(faces)!=1:
-            return False
+        
         for key,val in emotion_map.items():
             if val>max:
                 max=val

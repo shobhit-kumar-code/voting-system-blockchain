@@ -65,7 +65,8 @@ def registration_complete_candidate():
       if obj.register_candidate(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(file_handler.filename),result['criminal']) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None)
-
+      else:
+        return flask.render_template("permission_denied_voter.html")
 @app.route("/registration_complete_voter",methods = ['POST', 'GET'])
 def registration_complete_voter():
     mapping={
@@ -94,7 +95,7 @@ def registration_complete_voter():
           result['address'],result['gender'],result['wardno'],str(file_handler.filename)) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None)
       else:
-          return flask.render_template("permission_denied.html")
+          return flask.render_template("permission_denied_voter.html")
 
 
 @app.route("/registration_complete_voter_overseas",methods = ['POST', 'GET'])
@@ -127,7 +128,8 @@ def registration_complete_voter_overseas():
       if obj.register_voter_overseas(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(fh.filename),str(result['uid']+"_visa.jpg")) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid']+".jpg"),visa="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid'])+"_visa.jpg")
-
+    else:
+        return flask.render_template("permission_denied_overseas.html")
 
 @app.route("/cast_vote_home")
 def cast_vote_home():
@@ -148,7 +150,7 @@ def cast_vote_home():
       # import pdb; pdb.set_trace()
       return flask.render_template("cast_vote.html",result=result)
     else:
-        return "Emotional Issue"
+        return flask.render_template("permission_denied_emotion.html")
     break
 
 
