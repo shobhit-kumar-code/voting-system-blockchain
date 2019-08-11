@@ -1,90 +1,176 @@
 import adal
 import flask
 import uuid
+import urllib
 import requests
 import config
-from flask import redirect,request
+import json
+from flask import redirect,request,render_template
 app = flask.Flask(__name__)
 app.debug = True
 app.secret_key = 'development'
+session={}
+applid=4
+candidateRoleId=7
+voteWorkflowPropertyId=7
+currentuserid=-1
+def getyourroleid():
+    global currentuserid
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/applications/"+str(applid)+"/roleAssignments"
+    # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
+    
+    responsefromapi = requests.get(url,headers=headers)
+    print(responsefromapi.url)
+    print(responsefromapi.status_code)
+    print(responsefromapi.json())
+    if responsefromapi.status_code == 200:
+        results=json.loads(responsefromapi.content.decode('utf-8'))
+        print('user role code is')
+        x=0
+        while results['roleAssignments'][x]['user']['userID']!=currentuserid:
+            print(results['roleAssignments'][x]['user']['userID'])
+            print(currentuserid)
+            x=x+1
+        print(results['roleAssignments'][x]['applicationRoleId'])
+        if results['roleAssignments'][x]['applicationRoleId']==candidateRoleId:
+            return 'candidate'
+        else:
+            return 'voter'
 
-# PORT = 5000  # A flask app by default runs on PORT 5000
-# AUTHORITY_URL = config.AUTHORITY_HOST_URL + '/' + config.TENANT
-# REDIRECT_URI = 'http://localhost:{}/getAToken'.format(PORT)
-# TEMPLATE_AUTHZ_URL = ('https://login.microsoftonline.com/{}/oauth2/authorize?' +
-#                       'response_type=code&client_id={}&redirect_uri={}&' +
-#                       'state={}&resource={}')
+def getusertype():
+    global currentuserid
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/users/me"
+    # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
+    
+    responsefromapi = requests.get(url,headers=headers)
+    print(responsefromapi.url)
+    print(responsefromapi.status_code)
+    print(responsefromapi.json())
+    if responsefromapi.status_code == 200:
+        results=json.loads(responsefromapi.content.decode('utf-8'))
+        print('hello')
+        print(results['currentUser']['userID'])
+        currentuserid=results['currentUser']['userID']
+        if results['capabilities']['canUpgradeWorkbench']==True:
+            return 'admin'
+        else:
+            
+            return 'user'
+        
+    else:
+        return 'failed at getting user type'
 
-
-# @app.route("/")
-# def main():
-#     login_url = 'http://localhost:{}/login'.format(PORT)
-#     resp = flask.Response(status=307)
-#     resp.headers['location'] = login_url
-#     return resp
-
-
-# @app.route("/login")
-# def login():
-#     auth_state = str(uuid.uuid4())
-#     flask.session['state'] = auth_state
-#     authorization_url = TEMPLATE_AUTHZ_URL.format(
-#         config.TENANT,
-#         config.CLIENT_ID,
-#         REDIRECT_URI,
-#         auth_state,
-#         config.RESOURCE)
-#     resp = flask.Response(status=307)
-#     resp.headers['location'] = authorization_url
-#     print('resp is')
-#     print(resp)
-#     return resp
 @app.route("/shobhit",methods = ['POST', 'GET'])
 def shobhit():
+    
+    data = request.form.to_dict()
+    print(data['id_token'])
+    auth_token=data['id_token']
+    session['auth_token']=auth_token
+    usertype = getusertype()
+    if usertype=='user':
+        usertype1=getyourroleid()
+        if usertype1=='voter':
+            return render_template('home.html')
+        else:
+            return render_template('candidatehome.html')
+    else:
+        return render_template('adminhome.html')
+@app.route("/launchcandidate",methods = ['POST', 'GET'])
+def launchcandidate():
+    return 'tolaunchcandidate'
+@app.route("/reguser",methods = ['POST', 'GET'])
+def reguser():
+    # candidate_uid=request.form['uid']
+    #add this UID to Mongodb for thr candidate, and verify it is unique, if not send back to /ext
+    #all this comes from adminhome.html
+
+    apidata={
+        "externalID": request.form['externalid'],
+        "firstName": request.form['firstname'],
+        "lastName": request.form['lastname'],
+        "emailAddress": request.form['emailid']
+      }
+    print(apidata)
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/users"
+    # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
+    
+    responsefromapi = requests.post(url,json=apidata,headers=headers)
+    print(responsefromapi.url)
+    print(responsefromapi.status_code)
+    if responsefromapi.status_code == 200:
+        results=json.loads(responsefromapi.content.decode('utf-8'))
+        newuser=results
+
+        apidata={
+            "userId": newuser,
+            "applicationRoleId": 7 #role for candidate
+          }
+        print(apidata)
+        url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/applications/"+str(applid)+"/roleAssignments"
+        # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+        headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}
+
+        responsefromapitoassignrole = requests.post(url,json=apidata,headers=headers)
+
+        return 'thanks for voting'
+    else:
+        return 'failed'
+
+
+@app.route("/voted",methods = ['POST', 'GET'])
+def voted():
+    candidate_uid=request.form['uid']
+
+
+    apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts/"+str(candidate_uid)+"/actions"
+    # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
+    
+    responsefromapi = requests.post(url,json=apidata,headers=headers)
+    print(responsefromapi.url)
+    print(responsefromapi.status_code)
+    if responsefromapi.status_code == 200:
+        results=json.loads(responsefromapi.content.decode('utf-8'))
+        return 'thanks for voting'
+    else:
+        return 'failed'
+
+    return 'thanks for voting'
+
+@app.route("/shobhit1",methods = ['POST', 'GET'])
+def shobhit1():
     data = request.form.to_dict()
     print(data['id_token'])
     # print(request.form)
+
+    apidata={"workflowFunctionID": 1,"workflowActionParameters": [  { "name": "message", "value": "lalala", "workflowFunctionParameterId": 3 } ] }
+    auth_token=data['id_token']
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts"
+    params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(auth_token)}#{'Content-Type': 'application/json',
+    
+    responsefromapi = requests.post(url,params=params, json=apidata,headers=headers)
+    print(responsefromapi.url)
+    print(responsefromapi.status_code)
+    if responsefromapi.status_code == 200:
+        newid=json.loads(responsefromapi.content.decode('utf-8'))
+        return 'a'
+    else:
+        return 'hello'
+
     return 'hello'
 
 
 @app.route("/ext")
-def ext():
-    
+def ext():    
     # print(data['id_token'])
     return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/authorize?response_type=id_token%20code&client_id=c80344c2-d7fc-41e1-adcc-dd33683a7f6b&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fshobhit&state=c0756113-6172-47f2-8afc-666f315c15b1&client-request-id=0de0f9e0-a2f4-4853-9bd2-7326f1f409d1&x-client-SKU=Js&x-client-Ver=1.0.17&nonce=3f993c47-3042-4669-bdce-02024f6c802f&response_mode=form_post")
     # return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/v2.0/authorize?client_id=c62087b9-cfed-4105-a9c2-4fd3953ceed5&response_type=id_token&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fshobhit&response_mode=fragment&scope=openid&state=12345&nonce=678910")
-
-
-# @app.route("/getAToken")
-# def main_logic():
-#     code = flask.request.args['code']
-#     state = flask.request.args['state']
-#     if state != flask.session['state']:
-#         raise ValueError("State does not match")
-#     auth_context = adal.AuthenticationContext(AUTHORITY_URL)
-#     token_response = auth_context.acquire_token_with_authorization_code(code, REDIRECT_URI, config.RESOURCE,
-#                                                                         config.CLIENT_ID, config.CLIENT_SECRET)
-#     # It is recommended to save this to a database when using a production app.
-#     print('token is:')
-#     print(token_response['accessToken'])
-#     flask.session['access_token'] = token_response['accessToken']
-
-#     return flask.redirect('/graphcall')
-
-
-# @app.route('/graphcall')
-# def graphcall():
-#     if 'access_token' not in flask.session:
-#         return flask.redirect(flask.url_for('login'))
-#     endpoint = config.RESOURCE + '/' + config.API_VERSION + '/me/'
-#     http_headers = {'Authorization': 'Bearer ' + flask.session.get('access_token'),
-#                     'User-Agent': 'adal-python-sample',
-#                     'Accept': 'application/json',
-#                     'Content-Type': 'application/json',
-#                     'client-request-id': str(uuid.uuid4())}
-#     graph_data = requests.get(endpoint, headers=http_headers, stream=False).json()
-#     return flask.render_template('display_graph_info.html', graph_data=graph_data)
-
 
 if __name__ == "__main__":
     app.run()
