@@ -6,6 +6,7 @@ import sys
 from werkzeug import secure_filename
 from vote_system import Voting
 import pdb
+
 import cv2
 import pymongo
 # sys.path.append('D:\EmotionDetection')
@@ -92,6 +93,9 @@ def registration_complete_voter():
       if obj.register_voter(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(file_handler.filename)) ==True:
             return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None)
+      else:
+          return flask.render_template("permission_denied.html")
+
 
 @app.route("/registration_complete_voter_overseas",methods = ['POST', 'GET'])
 def registration_complete_voter_overseas():
@@ -147,6 +151,7 @@ def cast_vote_home():
         return "Emotional Issue"
     break
 
+
 @app.route("/cast_vote")
 def cast_vote():
   myclient=pymongo.MongoClient("mongodb://localhost:27017/")
@@ -157,6 +162,8 @@ def cast_vote():
     result.append(x)
   # import pdb; pdb.set_trace()
   return flask.render_template("cast_vote.html",result=result)
+
+
 @app.route("/voted",methods = ['POST', 'GET'])
 def voted():
   if request.method=="POST":
@@ -172,5 +179,4 @@ def voted():
 
 
 if __name__ == "__main__":
-
     app.run(debug=True)
