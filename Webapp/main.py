@@ -36,7 +36,7 @@ def register_voter_overseas():
     return flask.render_template("register_voter_overseas.html")
 @app.route("/register")
 def register():
-    return flask.render_template("register.html")
+    return flask.render_template("home.html")
 
 @app.route("/login")
 def login():
