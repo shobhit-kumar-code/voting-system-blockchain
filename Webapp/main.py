@@ -6,9 +6,11 @@ import sys
 from werkzeug import secure_filename
 from vote_system import Voting
 import pdb
+from azurenews import NewsSearch
 
 import cv2
 import pymongo
+
 # sys.path.append('D:\EmotionDetection')
 # print(sys.path)
 # from Mails import Mail
@@ -20,7 +22,9 @@ data = json.load(fd)
 
 @app.route("/")
 def home():
-     return flask.render_template("home.html")
+    obj=NewsSearch()
+    result=obj.news()
+    return flask.render_template("home.html",result=result)
 
 
 @app.route("/register_candidate")
