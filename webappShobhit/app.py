@@ -80,6 +80,29 @@ def shobhit():
         return render_template('adminhome.html')
 @app.route("/launchcandidate",methods = ['POST', 'GET'])
 def launchcandidate():
+    apidata={
+        "workflowFunctionID": 8,
+        "workflowActionParameters": [
+          {
+            "name": "uid",
+            "value": "12",
+            "workflowFunctionParameterId": 6
+          }
+        ]
+      }
+    print(apidata)
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts?workflowId=4&contractCodeId=4&connectionId=1"
+    # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
+    
+    responsefromapi = requests.post(url,json=apidata,headers=headers)
+    print(responsefromapi.url)
+    print(responsefromapi.status_code)
+    if responsefromapi.status_code == 200:
+        results=json.loads(responsefromapi.content.decode('utf-8'))
+        newcontract=results
+        print('newcontract')
+        print(newcontract)##add to db
     return 'tolaunchcandidate'
 @app.route("/reguser",methods = ['POST', 'GET'])
 def reguser():
