@@ -145,15 +145,15 @@
         </nav>
 
    <div class="main-panel">
-        <div class="content-wrapper">
+        <div class="content-wrapper" style = "background: linear-gradient(#ffacea2c,#ff95df80)">
           <div class="page-header">
             <h3 class="page-title">
-              Basic Tables
+              Submitted Details
             </h3>
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Tables</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <!-- <li class="breadcrumb-item active" aria-current="page">Please confirm your details and press Submit</li> -->
               </ol>
             </nav>
           </div>
@@ -161,7 +161,7 @@
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Basic Table</h4>
+                  <h4 class="card-title">Data Uploaded</h4>
                   <table class="table table-bordered">
                       {% for key, value in result.items() %}
                           <tr>
@@ -181,7 +181,15 @@
                       <td><img src="{{visa}}" alt="FILE NOT FOUND"></td>
                       {% endif %}
                     </tr>
+                    
                   </table>
+                  {% if candidate!=None%}
+                    <form class="forms-sample" action="http://localhost:5000/ext" enctype="multipart/form-data" >
+                        <label><h6>Please Register/Login to your Microsoft account as well to complete your registration process</h6></label>
+                        <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
+                        <button class="btn btn-light">Cancel</button>
+                    </form>
+                  {% endif %}
                 </div>
               </div>
             </div>

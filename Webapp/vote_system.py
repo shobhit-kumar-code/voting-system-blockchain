@@ -59,7 +59,7 @@ class Voting:
         return (self.validate("voter") and self.register_db("voter"))
     def register_voter_overseas(self,uid,fname,lname,age,address,gender,ward,photo,visa):
         self.uid,self.fname,self.lname,self.age,self.address,self.photo,self.gender,self.ward,self.visa=uid,fname,lname,age,address,photo,gender,ward,visa
-        path=data["ImgPath"]+self.visa
+        path=data["ImgPath"]+"\\"+self.visa
         return (self.validate("voter_overseas") and self.register_db("voter_overseas") and self.visa_verification(path))# run if dependencies satisfied
         ##############################################################RUN THE ABOVE visa_verification only post dependency resolution
         ######################################################################################################################

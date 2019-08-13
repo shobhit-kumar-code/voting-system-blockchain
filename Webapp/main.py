@@ -72,10 +72,14 @@ def registration_complete_candidate():
       #file_handler.save(os.path.join("D:\codefundo\Webapp\static\PurpleAdmin-Free-Admin-Template-master\images",secure_filename(file_handler.filename)))
       file_handler.save(os.path.join(data["ImgPath"],secure_filename(result['uid']+".jpg")))
       obj=Voting()
+      # import pdb; pdb.set_trace()
       if obj.register_candidate(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(file_handler.filename),result['criminal']) ==True:
           # return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/authorize?response_type=id_token%20code&client_id=c80344c2-d7fc-41e1-adcc-dd33683a7f6b&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fregister&state=c0756113-6172-47f2-8afc-666f315c15b1&client-request-id=0de0f9e0-a2f4-4853-9bd2-7326f1f409d1&x-client-SKU=Js&x-client-Ver=1.0.17&nonce=3f993c47-3042-4669-bdce-02024f6c802f&response_mode=form_post")  
-          return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None)
+          fil=open("uid.txt","w")
+          fil.write(result['uid'])
+          fil.close()
+          return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None,candidate=result['uid'])
       else:
         return flask.render_template("permission_denied_voter.html")
 @app.route("/registration_complete_voter",methods = ['POST', 'GET'])
@@ -104,7 +108,7 @@ def registration_complete_voter():
           result['address'],str(file_handler.filename))
       if obj.register_voter(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(file_handler.filename)) ==True:
-            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None)
+            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+file_handler.filename,visa=None,candidate=None)
       else:
           return flask.render_template("permission_denied_voter.html")
 
@@ -138,7 +142,7 @@ def registration_complete_voter_overseas():
           result['address'],str(file_handler.filename))
       if obj.register_voter_overseas(result['uid'],result['fname'],result['lname'],result['age'],
           result['address'],result['gender'],result['wardno'],str(fh.filename),str(result['uid']+"_visa.jpg")) ==True:
-            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid']+".jpg"),visa="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid'])+"_visa.jpg")
+            return flask.render_template("registration_complete.html",result=result,mapping=mapping,photo="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid']+".jpg"),visa="../static/PurpleAdmin-Free-Admin-Template-master/images/"+str(result['uid'])+"_visa.jpg",candidate=None)
     else:
         return flask.render_template("permission_denied_overseas.html")
 
@@ -165,31 +169,59 @@ def cast_vote_home():
     break
 
 
-@app.route("/cast_vote")
-def cast_vote():
-  myclient=pymongo.MongoClient(uri)
-  mydb = myclient["codefundo"]
-  mycol=mydb['cand_reg']
-  result=[]
-  for x in mycol.find():
-    result.append(x)
-  # import pdb; pdb.set_trace()
-  return flask.render_template("cast_vote.html",result=result)
+# @app.route("/cast_vote")
+# def cast_vote():
+#   myclient=pymongo.MongoClient(uri)
+#   mydb = myclient["codefundo"]
+#   mycol=mydb['cand_reg']
+#   result=[]
+#   for x in mycol.find():
+#     result.append(x)
+#   # import pdb; pdb.set_trace()
+#   return flask.render_template("cast_vote.html",result=result)
 
 
 @app.route("/voted",methods = ['POST', 'GET'])
 def voted():
   if request.method=="POST":
     result=request.form
+    # import pdb; pdb.set_trace()
     whom=result['vote']
     myclient = pymongo.MongoClient(uri)
     mydb = myclient["codefundo"]
     mycol=mydb['cand_reg']
-    current_votes=mycol.find_one({"UID":whom})['vote_count']
-    mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":1}})
+    #########THE LINE THAT FAKES IT#####################
+    mycol.update_one({str(whom):"17"},{"$set":{str(whom):"38"}})
+    #######################################################
+    dic=mycol.find_one({"UID":str(whom)},{str(whom):1,'_id':0})
+    candidate_uid=dic[str(whom)]
+    # current_votes=mycol.find_one({"UID":whom})['vote_count']
+    # mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":1}})
+    apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts/"+str(candidate_uid)+"/actions"
+    # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json'
     # import pdb; pdb.set_trace()
+    responsefromapi = requests.post(url,json=apidata,headers=headers)
     return flask.render_template("thank_you.html",result=mycol.find_one({"UID":whom}))
+  
 
+  # apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
+  # url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts/"+str(candidate_uid)+"/actions"
+  # # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+  # headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
+  
+  # responsefromapi = requests.post(url,json=apidata,headers=headers)
+  # print(responsefromapi.url)
+  # print(responsefromapi.status_code)
+  # if responsefromapi.status_code == 200:
+  #     results=json.loads(responsefromapi.content.decode('utf-8'))
+  #     ##TODO DB add this dude has voted
+  #     return 'thanks for voting'
+  # else:
+  #     return 'failed'
+
+  # return 'thanks for voting'
 
 ##################################################################################################################
 ##################################################################################################################
@@ -228,7 +260,6 @@ def getusertype():
   url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/users/me"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
-  
   responsefromapi = requests.get(url,headers=headers)
   print(responsefromapi.url)
   print(responsefromapi.status_code)
@@ -238,11 +269,12 @@ def getusertype():
       print('hello')
       print(results['currentUser']['userID'])
       currentuserid=results['currentUser']['userID']
+      # import pdb; pdb.set_trace()
       if results['capabilities']['canUpgradeWorkbench']==True:
-          return 'admin'
+          return ['admin',results['currentUser']['userID']]
       else:
           
-          return 'user'
+          return ['user',results['currentUser']['userID']]
       
   else:
       return 'failed at getting user type'
@@ -279,7 +311,6 @@ def getvotes():
       
 @app.route("/shobhit",methods = ['POST', 'GET'])
 def shobhit():
-  
   data = request.form.to_dict()
   print(data['id_token'])
   auth_token=data['id_token']
@@ -288,26 +319,7 @@ def shobhit():
   if usertype=='user':
       usertype1=getyourroleid()
       if usertype1=='voter':
-        cap = cv2.VideoCapture(0)
-        obj=Voting()
-        import time
-        while True:
-          time.sleep(3)
-          ret, frame = cap.read()
-          cv2.imwrite("img.jpg",frame)
-          if obj.check_emotion():
-            myclient=pymongo.MongoClient(uri)
-            mydb = myclient["codefundo"]
-            mycol=mydb['cand_reg']
-            result=[]
-            for x in mycol.find():
-              result.append(x)
-            # import pdb; pdb.set_trace()
-            return flask.render_template("cast_vote.html",result=result)
-          else:
-              return flask.render_template("permission_denied_emotion.html")
-          break
-          # return render_template('cast_vote.html')
+          return render_template('home.html')
       else:
           return render_template('candidatehome.html')
   else:
@@ -378,11 +390,42 @@ def reguser():
   else:
       return 'failed'
 
+@app.route("/register_msft",methods = ['POST', 'GET'])
+def register_msft():
+  data = request.form.to_dict()
+  print(data['id_token'])
+  # import pdb; pdb.set_trace()
+  auth_token=data['id_token']
+  session['auth_token']=auth_token
+  x = getusertype()
+  usertype=x[0]
+  user_id=x[1]
+  fil=str(open("uid.txt","r").read())
+  # import pdb; pdb.set_trace()
+  myclient = pymongo.MongoClient(uri)
+  mydb = myclient["codefundo"]
+  mycol=mydb['cand_reg']
+  # current_votes=mycol.find_one({"UID":str(fil)})['vote_count']
+  mycol.find_one_and_update({"UID":str(fil)},{'$set':{str(fil):user_id}})
+  # import pdb; pdb.set_trace()
+  if usertype=='user':
+      usertype1=getyourroleid()
+      if usertype1=='voter':
+          return flask.render_template("home_shobhit.html")
+      else:
+          return render_template('home_shobhit.html')
+  else:
+      return render_template('adminhome.html')
 
 @app.route("/shobhit_voted",methods = ['POST', 'GET'])
 def shobhit_voted():
   candidate_uid=request.form['uid']
-
+  myclient = pymongo.MongoClient(uri)
+  mydb = myclient["codefundo"]
+  mycol=mydb['cand_reg']
+  # import pdb; pdb.set_trace()
+  dic=mycol.find_one({"UID":str(candidate_uid)},{str(candidate_uid):1,'_id':0})
+  candidate_uid=dic[str(candidate_uid)]
 
   apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
   url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts/"+str(candidate_uid)+"/actions"
@@ -428,7 +471,7 @@ def shobhit1():
 @app.route("/ext")
 def ext():    
   # print(data['id_token'])
-  return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/authorize?response_type=id_token%20code&client_id=c80344c2-d7fc-41e1-adcc-dd33683a7f6b&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fshobhit&state=c0756113-6172-47f2-8afc-666f315c15b1&client-request-id=0de0f9e0-a2f4-4853-9bd2-7326f1f409d1&x-client-SKU=Js&x-client-Ver=1.0.17&nonce=3f993c47-3042-4669-bdce-02024f6c802f&response_mode=form_post")
+  return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/authorize?response_type=id_token%20code&client_id=c80344c2-d7fc-41e1-adcc-dd33683a7f6b&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fregister_msft&state=c0756113-6172-47f2-8afc-666f315c15b1&client-request-id=0de0f9e0-a2f4-4853-9bd2-7326f1f409d1&x-client-SKU=Js&x-client-Ver=1.0.17&nonce=3f993c47-3042-4669-bdce-02024f6c802f&response_mode=form_post")
   # return redirect("https://login.microsoftonline.com/kumarshobhit98outlook.onmicrosoft.com/oauth2/v2.0/authorize?client_id=c62087b9-cfed-4105-a9c2-4fd3953ceed5&response_type=id_token&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fshobhit&response_mode=fragment&scope=openid&state=12345&nonce=678910")
 
 
