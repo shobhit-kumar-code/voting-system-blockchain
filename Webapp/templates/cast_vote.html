@@ -237,11 +237,20 @@
                                         Ward: {{key['Ward No']}}<br/>
                                         Age: {{key['Age']}}<br/>
                                         Criminal Records: {{key['Criminal']}}<br/>
-
+                                        <select>
+                                          <option>
+                                            <textarea>
+                                              {{news}}
+                                            </textarea>
+                                          </option>
+                                        </select>
                                     </div>
                                 </div>
                                 </div>
                             {% endfor %}
+                              </div>
+                </div>
+            </div>
                                 <label>
                                         <select name="vote">
                                                 {% for key in result %}
