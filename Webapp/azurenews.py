@@ -8,7 +8,7 @@ subscription_key = "730223159060415484ac311dbfe15bed"
 
 
 class NewsSearch:
-    def news(self,search_term="Election India"):
+    def news(self,search_term="Indian Election"):
         #import pdb;pdb.set_trace()
         client = NewsSearchAPI(CognitiveServicesCredentials(subscription_key))
 
@@ -20,9 +20,12 @@ class NewsSearch:
             print("News result count: {}".format(len(news_result.value)).encode("utf-8"))
             result=[]
             for first_news_result in news_result.value:        
-                result.append("Title: {}".format(first_news_result.name))
-                result.append("URL: {}".format(first_news_result.url))
-                result.append("Description: {}".format(first_news_result.description))
+                subresult = []
+                subresult.append("{}".format(first_news_result.name))
+                subresult.append("{}".format(first_news_result.url))
+                result.append(subresult)
+
+                #result.append("{}".format(first_news_result.description))
                 # print("Published time: {}".format(first_news_result.date_published).encode("utf-8"))
                 # print("News provider: {}".format(first_news_result.provider[0].name).encode("utf-8"))
                 # print('\n\n\n\n')
