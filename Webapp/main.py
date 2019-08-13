@@ -201,6 +201,7 @@ def voted():
 
 def getyourroleid():
   global currentuserid
+  global session
   url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/applications/"+str(applid)+"/roleAssignments"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
@@ -225,6 +226,7 @@ def getyourroleid():
 
 def getusertype():
   global currentuserid
+  global session
   url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/users/me"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
@@ -247,6 +249,7 @@ def getusertype():
   else:
       return 'failed at getting user type'
 def getvotecount():
+  global session
   url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts?workflowId=4"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
@@ -279,7 +282,7 @@ def getvotes():
       
 @app.route("/shobhit",methods = ['POST', 'GET'])
 def shobhit():
-  
+  global session
   data = request.form.to_dict()
   print(data['id_token'])
   auth_token=data['id_token']
@@ -314,6 +317,7 @@ def shobhit():
       return render_template('adminhome.html')
 @app.route("/launchcandidate",methods = ['POST', 'GET'])
 def launchcandidate():
+  global session
   apidata={
       "workflowFunctionID": 8,
       "workflowActionParameters": [
@@ -341,6 +345,7 @@ def launchcandidate():
   return 'tolaunchcandidate'
 @app.route("/reguser",methods = ['POST', 'GET'])
 def reguser():
+  global session
   # candidate_uid=request.form['uid']
   #add this UID to Mongodb for thr candidate, and verify it is unique, if not send back to /ext
   #all this comes from adminhome.html
@@ -381,6 +386,7 @@ def reguser():
 
 @app.route("/shobhit_voted",methods = ['POST', 'GET'])
 def shobhit_voted():
+  global session
   candidate_uid=request.form['uid']
 
 
