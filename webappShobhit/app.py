@@ -61,7 +61,37 @@ def getusertype():
         
     else:
         return 'failed at getting user type'
+def getvotecount():
+    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts?workflowId=4"
+    # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
+    headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
+    
+    responsefromapi = requests.get(url,headers=headers)
+    print(responsefromapi.url)
+    print(responsefromapi.status_code)
+    print(responsefromapi.json())
+    if responsefromapi.status_code == 200:
+        results=json.loads(responsefromapi.content.decode('utf-8'))
+        return results
+    else:
+        return 'error in getting votes'
+@app.route("/getvotes",methods = ['POST', 'GET'])
+def getvotes():
+    ansstr={}
+    votejson= getvotecount()
+    for x in votejson['contracts']:
+        # f=0
+        temp =  'dude number :'+str(x['id'])+':'
+        for y in x['contractProperties']:
+            if y['workflowPropertyId']==14:
+                temp = temp + 'number of votes: '+str(y['value'])+'\n'
+                ansstr[str(x['id'])]=y['value']
+                # f=1
+        # if f==1:
+        #     ansstr = ansstr+temp
+    return ansstr
 
+        
 @app.route("/shobhit",methods = ['POST', 'GET'])
 def shobhit():
     
@@ -103,6 +133,7 @@ def launchcandidate():
         newcontract=results
         print('newcontract')
         print(newcontract)##add to db
+        ##TODO add this dude lauched
     return 'tolaunchcandidate'
 @app.route("/reguser",methods = ['POST', 'GET'])
 def reguser():
@@ -139,7 +170,7 @@ def reguser():
 
         responsefromapitoassignrole = requests.post(url,json=apidata,headers=headers)
 
-        return 'thanks for voting'
+        return 'thanks for registering'
     else:
         return 'failed'
 
@@ -159,6 +190,7 @@ def voted():
     print(responsefromapi.status_code)
     if responsefromapi.status_code == 200:
         results=json.loads(responsefromapi.content.decode('utf-8'))
+        ##TODO DB add this dude has voted
         return 'thanks for voting'
     else:
         return 'failed'
