@@ -234,16 +234,21 @@
                                         UID:{{key['UID']}}<br/>
                                         Full Name: {{key['First Name']}} {{key['Last Name']}}<br/>
                                         Address: {{key['Address']}}<br/>
-                                        Ward: {{key['Ward No']}}<br/>
+                                        Ward: {{key['Ward No']}}<br/>1
                                         Age: {{key['Age']}}<br/>
                                         Criminal Records: {{key['Criminal']}}<br/>
+                                        
                                         <select>
+                                          <option>News</option>
+                                            
                                           <option>
-                                            <textarea>
-                                              {{news}}
-                                            </textarea>
+                                              {% for new in news%}
+                                                {{new}}
+                                              {% endfor %}
+                                           
                                           </option>
-                                        </select>
+                                          </select>
+                                        
                                     </div>
                                 </div>
                                 </div>
