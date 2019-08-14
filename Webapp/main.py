@@ -44,14 +44,40 @@ def home_1():
 
 @app.route("/list")
 def list_fun():
+  mapping={
+    "001":"Bangalore",
+    "002":"Delhi",
+    "003":"Chennai",
+    "004": "Mumbai",
+    "005":"Kolkata",
+    "006":"Hyderabad"
+  }
   myclient=pymongo.MongoClient(uri)
   mydb = myclient["codefundo"]
   mycol=mydb['vote_reg']
   result=[]
   for x in mycol.find():
     result.append(x)
-  return flask.render_template("electoral.html",result=result)
-  
+  return flask.render_template("electoral.html",result=result,mapping=mapping)
+ 
+@app.route("/candidates")
+def candidate_fun():
+  mapping={
+    "001":"Bangalore",
+    "002":"Delhi",
+    "003":"Chennai",
+    "004": "Mumbai",
+    "005":"Kolkata",
+    "006":"Hyderabad"
+  }
+  myclient=pymongo.MongoClient(uri)
+  mydb = myclient["codefundo"]
+  mycol=mydb['cand_reg']
+  result=[]
+  for x in mycol.find():
+    result.append(x)
+  return flask.render_template("candidate.html",result=result,mapping=mapping)
+ 
 @app.route("/register_candidate")
 def register_candidate():
     return flask.render_template("register_candidate.html")
@@ -167,6 +193,14 @@ def registration_complete_voter_overseas():
 
 @app.route("/cast_vote_home")
 def cast_vote_home():
+  mapping={
+    "001":"Bangalore",
+    "002":"Delhi",
+    "003":"Chennai",
+    "004": "Mumbai",
+    "005":"Kolkata",
+    "006":"Hyderabad"
+  }
   global session
   print(session)
   # import pdb; pdb.set_trace()
@@ -190,7 +224,7 @@ def cast_vote_home():
       for res in result:
         news.append(obj.news_candidate(str(res["First Name"]+" "+res['Last Name']+" india election")))
       # import pdb; pdb.set_trace()
-      return flask.render_template("cast_vote.html",result=result,news=news)
+      return flask.render_template("cast_vote.html",result=result,news=news,mapping=mapping)
     else:
         return flask.render_template("permission_denied_emotion.html")
     break

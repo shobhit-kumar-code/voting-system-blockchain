@@ -159,7 +159,7 @@
               <li class="nav-item nav-profile">
                 <a href="#" class="nav-link">
                   <div class="nav-profile-image">
-                    <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/faces-clipart/pic-1.png" alt="profile">
+                    <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/abhiramImage.jpg" alt="profile">
                     <span class="login-status online"></span> <!--change to offline or busy as needed-->
                   </div>
                   
@@ -234,10 +234,12 @@
                                         UID:{{key['UID']}}<br/>
                                         Full Name: {{key['First Name']}} {{key['Last Name']}}<br/>
                                         Address: {{key['Address']}}<br/>
-                                        Ward: {{key['Ward No']}}<br/>1
+                                        Ward: {{mapping[key['Ward No']]}}<br/>
                                         Age: {{key['Age']}}<br/>
                                         Criminal Records: {{key['Criminal']}}<br/>
                                         
+                                        <!-- MAKE THE CHANGE HERE -->
+                                        <button class="file-upload-browse btn btn-gradient-primary" type="button">Recent News</button>
                                         <select>
                                           <option>News</option>
                                             
