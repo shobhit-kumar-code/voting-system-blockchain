@@ -12,7 +12,7 @@ class NewsSearch:
         #import pdb;pdb.set_trace()
         client = NewsSearchAPI(CognitiveServicesCredentials(subscription_key))
 
-        news_result = client.news.search(query=search_term, market="en-us", count=6)
+        news_result = client.news.search(query=search_term, market="en-us", count=7)
         # import pdb; pdb.set_trace()
         if news_result.value:
             print("Total estimated matches value: {}".format(

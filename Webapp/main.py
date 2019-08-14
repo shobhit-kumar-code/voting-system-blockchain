@@ -78,6 +78,16 @@ def candidate_fun():
     result.append(x)
   return flask.render_template("candidate.html",result=result,mapping=mapping)
  
+@app.route("/result_proof")
+def result_proof():
+  fil=open("vote_tabulate.txt","r").read()
+  # import pdb; pdb.set_trace()
+  entries=fil.split("\n")
+  result=[]
+  for e in entries:
+    x,y=e.split("\t\t")
+    result.append({"Name":x,"Timestamp":y})
+  return flask.render_template("result_proof.html",result=result)
 @app.route("/register_candidate")
 def register_candidate():
     return flask.render_template("register_candidate.html")
@@ -248,6 +258,9 @@ def voted():
     result=request.form
     # import pdb; pdb.set_trace()
     whom=result['vote']
+    import datetime
+    import time
+    fil=open("vote_tabulate.txt","a+")
     myclient = pymongo.MongoClient(uri)
     mydb = myclient["codefundo"]
     mycol=mydb['cand_reg']
@@ -256,6 +269,10 @@ def voted():
     #######################################################
     dic=mycol.find_one({"UID":str(whom)},{str(whom):1,'_id':0})
     candidate_uid=dic[str(whom)]
+    dic=mycol.find_one({"UID":str(whom)},{"First Name":1,"Last Name":1,'_id':0})
+    # time=datetime.datetime.now()
+    t=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    fil.writelines(str(dic["First Name"]+" "+dic['Last Name']+"\t\t"+t))
     # current_votes=mycol.find_one({"UID":whom})['vote_count']
     # mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":1}})
     apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
