@@ -8,6 +8,8 @@ from vote_system import Voting
 import pdb
 from azurenews import NewsSearch
 import cv2
+from azure.cognitiveservices.search.newssearch import NewsSearchAPI
+from msrest.authentication import CognitiveServicesCredentials
 import pymongo
 import requests
 
