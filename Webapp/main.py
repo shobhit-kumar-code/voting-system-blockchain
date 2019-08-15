@@ -26,6 +26,9 @@ fd = open("config.txt")
 data = json.load(fd)
 
 
+@app.route("/results")
+def results():
+  return flask.render_template("results.html")
 @app.route("/")
 def home():
     obj=NewsSearch()

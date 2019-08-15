@@ -13,6 +13,11 @@
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
+  <!-- Inserting 3 lines -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
   <link rel="stylesheet" href="../static/PurpleAdmin-Free-Admin-Template-master/css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../static/images/favicon.png" />
@@ -29,57 +34,6 @@
         .sticky + .content {
             padding-top: 100px;
         }
-        .popup {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            }
-
-            /* The actual popup (appears on top) */
-            .popup .popuptext {
-            visibility: hidden;
-            width: 160px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -80px;
-            }
-
-            /* Popup arrow */
-            .popup .popuptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #555 transparent transparent transparent;
-            }
-
-            /* Toggle this class when clicking on the popup container (hide and show the popup) */
-            .popup .show {
-            visibility: visible;
-            -webkit-animation: fadeIn 1s;
-            animation: fadeIn 1s
-            }
-
-            /* Add animation (fade in the popup) */
-            @-webkit-keyframes fadeIn {
-            from {opacity: 0;} 
-            to {opacity: 1;}
-            }
-
-            @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity:1 ;}
-            }
     </style>
 </head>
 
@@ -216,10 +170,32 @@
                   <h4 class="font-weight-normal mb-3">Unlock Voting Facility
                     <i class="mdi mdi-account mdi-24px float-right"></i>
                   </h4>
-                  <div class="popup" onclick="unlock()">
-                        <span class="popuptext" id="myPopup">Popup text...</span>
-                  <a href="/" onclick="unlock()"><span style="color:white"><h2 class="mb-5">Click to Unlock</h2></span></a>
-                </div>
+                  <!-- <a href="/" onclick="unlock()"><span style="color:white"><h2 class="mb-5">Click to Unlock</h2></span></a> -->
+                  <!-- <h2>Modal </h2> -->
+                <!-- Trigger the modal with a button -->
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Unlock Voting</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+                        
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <!-- <h4 class="modal-title" style="color: black;text-align:left;">Voting system unlocked</h4> -->
+                            </div>
+                            <div class="modal-body" style="color: black">
+                                <h2>Voting service unlocked</h2>
+                            <h3>Make sure to close the service at EOD</h3>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                        
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -230,8 +206,32 @@
                   <h4 class="font-weight-normal mb-3">Lock Voting Facility
                     <i class="mdi mdi-account-plus mdi-24px float-right"></i>
                   </h4>
-                  <a href="/" onclick="lock()"><span style="color:white"><h2 class="mb-3">Click to Lock</h2></span></a>
+                  <!-- <a href="/" onclick="lock()"><span style="color:white"><h2 class="mb-3">Click to Lock</h2></span></a> -->
                     <!-- <a href="/register_voter_overseas"> <span style="color:white"><h2 class="mb-3">Residing Overseas</h2></span></a> -->
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModalLock">Lock Voting</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModalLock" role="dialog">
+                            <div class="modal-dialog">
+                            
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <!-- <h4 class="modal-title" style="color: black;text-align:left;">Voting system unlocked</h4> -->
+                                </div>
+                                <div class="modal-body" style="color: black">
+                                    <h2>Voting service locked</h2>
+                                <h3>Voters cannot make any inputs here onwards</h3>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
                 </div>
               </div>
             </div>
@@ -242,7 +242,7 @@
                   <h4 class="font-weight-normal mb-3">Display Results
                     <i class="mdi mdi-account-plus mdi-24px float-right"></i>
                   </h4>
-                  <a href="/results"> <span style="color:white"><h2 class="mb-5">Results of the concluded elections</h2></span></a>
+                  <a href="/candidates"> <span style="color:white"><h2 class="mb-5">Results of the concluded elections</h2></span></a>
                 </div>
               </div>
             </div>
@@ -350,15 +350,10 @@ function myFunction() {
 function lock(){
     alert("Voting system closed");
 }
-function unlock()
-    {
-        alert("Voting System Unlocked successfully")
-        var popup = document.getElementById("myPopup");
-        popup.classList.toggle("show");
-    }
-
+function unlock(){
+    alert("Voting system open for operations");
+}
 </script>
-
 
   <!-- endinject -->
 </body>
