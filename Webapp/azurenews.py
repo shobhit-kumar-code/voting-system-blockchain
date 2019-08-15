@@ -15,9 +15,9 @@ class NewsSearch:
         news_result = client.news.search(query=search_term, market="en-us", count=7)
         # import pdb; pdb.set_trace()
         if news_result.value:
-            print("Total estimated matches value: {}".format(
-                    news_result.total_estimated_matches))
-            print("News result count: {}".format(len(news_result.value)).encode("utf-8"))
+            # print("Total estimated matches value: {}".format(
+            #         news_result.total_estimated_matches))
+            # print("News result count: {}".format(len(news_result.value)).encode("utf-8"))
             result=[]
             for first_news_result in news_result.value:        
                 subresult = []
