@@ -21,7 +21,10 @@ class NewsSearch:
             result=[]
             for first_news_result in news_result.value:        
                 subresult = []
-                subresult.append("{}".format(first_news_result.name))
+                if len(first_news_result.name)>120:
+                    subresult.append("{}...".format(first_news_result.name[:120]))
+                else:
+                    subresult.append("{}".format(first_news_result.name))
                 subresult.append("{}".format(first_news_result.url))
                 result.append(subresult)
 
@@ -45,7 +48,10 @@ class NewsSearch:
             result=[]
             for first_news_result in news_result.value:        
                 subresult = []
-                a=first_news_result.name
+                if len(first_news_result.name)>120:
+                    a=first_news_result.name[:120]+"..."
+                else:
+                    a=first_news_result.name
                 # subresult.append("{}".format(first_news_result.name))
                 # subresult.append("{}".format(first_news_result.url))
                 result.append(a)
