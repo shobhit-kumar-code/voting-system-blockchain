@@ -78,6 +78,11 @@ def candidate_fun():
     result.append(x)
   return flask.render_template("candidate.html",result=result,mapping=mapping)
  
+@app.route("/admin_home")
+def admin_home():
+  obj=NewsSearch()
+  result=obj.news()
+  return flask.render_template("admin_home.html",result=result)
 @app.route("/result_proof")
 def result_proof():
   fil=open("vote_tabulate.txt","r").read()
@@ -401,7 +406,7 @@ def shobhit():
       else:
           return render_template('candidatehome.html')
   else:
-      return render_template('adminhome.html')
+      return render_template('admin_home.html')
 @app.route("/launchcandidate",methods = ['POST', 'GET'])
 def launchcandidate():
   apidata={
@@ -495,7 +500,7 @@ def register_msft():
       else:
           return render_template('home.html')
   else:
-      return render_template('adminhome.html')
+      return render_template('admin_home.html')
 
 @app.route("/shobhit_voted",methods = ['POST', 'GET'])
 def shobhit_voted():

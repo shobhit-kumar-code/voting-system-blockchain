@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Election Portal</title>
+  <title>Election Portal - Admin Home</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../static/PurpleAdmin-Free-Admin-Template-master/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../static/PurpleAdmin-Free-Admin-Template-master/vendors/css/vendor.bundle.base.css">
@@ -29,6 +29,57 @@
         .sticky + .content {
             padding-top: 100px;
         }
+        .popup {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            }
+
+            /* The actual popup (appears on top) */
+            .popup .popuptext {
+            visibility: hidden;
+            width: 160px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -80px;
+            }
+
+            /* Popup arrow */
+            .popup .popuptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+            }
+
+            /* Toggle this class when clicking on the popup container (hide and show the popup) */
+            .popup .show {
+            visibility: visible;
+            -webkit-animation: fadeIn 1s;
+            animation: fadeIn 1s
+            }
+
+            /* Add animation (fade in the popup) */
+            @-webkit-keyframes fadeIn {
+            from {opacity: 0;} 
+            to {opacity: 1;}
+            }
+
+            @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity:1 ;}
+            }
     </style>
 </head>
 
@@ -153,7 +204,7 @@
           <div class="page-header">
             <h3 class="page-title">
               <span class="page-title-icon bg-gradient-primary text-white mr-2">
-                 <a href="/ext"> <button type="button" class="btn btn-gradient-primary mr-2">Admin Login</button></a>
+                <i class="mdi mdi-home"></i>
               </span>
             </h3>
           </div>
@@ -162,10 +213,10 @@
               <div class="card bg-gradient-danger card-img-holder text-white">
                 <div class="card-body">
                   <!-- <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/> -->
-                  <h4 class="font-weight-normal mb-3">Existing Voter
+                  <h4 class="font-weight-normal mb-3">Unlock Voting Facility
                     <i class="mdi mdi-account mdi-24px float-right"></i>
                   </h4>
-                  <a href="/redirect_home"> <span style="color:white"><h2 class="mb-5">Login Here</h2></span></a>
+                  <a href="/" onclick="unlock()"><span style="color:white"><h2 class="mb-5">Click to Unlock</h2></span></a>
                 </div>
               </div>
             </div>
@@ -173,11 +224,11 @@
               <div class="card bg-gradient-info card-img-holder text-white">
                 <div class="card-body">
                   <!-- <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/> -->
-                  <h4 class="font-weight-normal mb-3">New Voter Registration
+                  <h4 class="font-weight-normal mb-3">Lock Voting Facility
                     <i class="mdi mdi-account-plus mdi-24px float-right"></i>
                   </h4>
-                    <a href="/register_voter"> <span style="color:white"><h2 class="mb-3">Residing in India</h2></span></a>
-                    <a href="/register_voter_overseas"> <span style="color:white"><h2 class="mb-3">Residing Overseas</h2></span></a>
+                  <a href="/" onclick="lock()"><span style="color:white"><h2 class="mb-3">Click to Lock</h2></span></a>
+                    <!-- <a href="/register_voter_overseas"> <span style="color:white"><h2 class="mb-3">Residing Overseas</h2></span></a> -->
                 </div>
               </div>
             </div>
@@ -185,10 +236,10 @@
               <div class="card bg-gradient-success card-img-holder text-white">
                 <div class="card-body">
                   <!-- <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/> -->
-                  <h4 class="font-weight-normal mb-3">Candidate Registration
+                  <h4 class="font-weight-normal mb-3">Display Results
                     <i class="mdi mdi-account-plus mdi-24px float-right"></i>
                   </h4>
-                  <a href="/register_candidate"> <span style="color:white"><h2 class="mb-5">Register Here</h2></span></a>
+                  <a href="/results"> <span style="color:white"><h2 class="mb-5">Results of the concluded elections</h2></span></a>
                 </div>
               </div>
             </div>
@@ -239,30 +290,28 @@
                               <td><h6>{{subresult[0]}}</h6></td>
                               <td><a href="{{ subresult[1] }}">Read More</a></td>
                             </tr>
-                      {% endfor %}
+                        {% endfor %}
                       </table>
                     </div>
-{#                    <div class="col-6 pl-1">#}
-{#                      <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/dashboard/img_2.jpg" class="mb-2 mw-100 w-100 rounded" alt="image">#}
-{#                      <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/dashboard/img_3.jpg" class="mw-100 w-100 rounded" alt="image">#}
-{#                    </div>#}
-{#                  </div>#}
-{#                  <div class="d-flex mt-5 align-items-top">#}
-{#                    <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/faces/face3.jpg" class="img-sm rounded-circle mr-3" alt="image">#}
-{#                    <div class="mb-0 flex-grow">#}
-{#                      <h5 class="mr-2 mb-2">School Website - Authentication Module.</h5>#}
-{#                      <p class="mb-0 font-weight-light">It is a long established fact that a reader will be distracted by the readable#}
-{#                        content of a page.</p>#}
-{#                    </div>#}
-{#                    <div class="ml-auto">#}
-{#                      <i class="mdi mdi-heart-outline text-muted"></i>#}
-{#                    </div>#}
-{#                  </div>#}
-{#                </div>#}
               </div>
             </div>
           </div>
         </div>
+        
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-blue card-img-holder text-white">
+                  <div class="card-body">
+                    <!-- <img src="../static/PurpleAdmin-Free-Admin-Template-master/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/> -->
+                    <h4 class="font-weight-normal mb-3">Results of the Election, Proof of Voting and Non Tamperance
+                      <i class="mdi mdi-account mdi-24px float-right"></i>
+                    </h4>
+                    <a href="/result_proof"> <span style="color:white"><h2 class="mb-5">Click to view the results</h2></span></a>
+                    <a href="/result_proof"><span style="color:white"><h2 class="mb-5">Click to download the results</h2></span></a>
+                    <img src="../static/images/india.png" width="60%">
+                  </div>
+                </div>
+      </div>
+        
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
       </div>
@@ -295,8 +344,21 @@ function myFunction() {
     navbar.classList.remove("sticky");
   }
 }
+function lock(){
+    alert("Voting system closed");
+}
+function unlock()
+    {
+        alert("Voting System Unlocked successfully")
+        var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");
+        
+        
+    
+    }
 
 </script>
+
 
   <!-- endinject -->
 </body>
