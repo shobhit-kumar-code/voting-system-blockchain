@@ -1,7 +1,7 @@
 import requests
-import matplotlib.pyplot as plt
+'''import matplotlib.pyplot as plt
 from PIL import Image
-from matplotlib import patches
+from matplotlib import patches'''
 from io import BytesIO
 import os
 
@@ -11,7 +11,7 @@ import os
 class Face_Detector:
     def detect(self,path):
         # Replace <Subscription Key`> with your valid subscription key.
-        subscription_key = "754bbd8536204ecfb5d0bd7006cf156a" #DSFace API
+        subscription_key = "2f562fb2571f4be1b0bd1911b33028f1" #DSFace API
 
         # Set image path from local file.
         image_path = path#os.path.join('D:\\codefundo\\Webapp\\visaSample1.jpg')

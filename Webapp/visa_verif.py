@@ -2,11 +2,10 @@ import requests
 # If you are using a Jupyter notebook, uncomment the following line.
 # %matplotlib inline
 
-from PIL import Image
 from datetime import date
 import re
 # Replace <Subscription Key> with your valid subscription key.
-subscription_key = "cd92f24dfbfe4c2ca6bc23ec1cb7a95a"
+subscription_key = "41f761321d1b4e36831042fb063910cd"
 assert subscription_key
 
 # You must use the same region in your REST call as you used to get your
