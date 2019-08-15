@@ -167,24 +167,51 @@
                       {% for key in result %}
                       <div class="col-6">
                             <tr>
-                            <td>{{key['UID']}}</td>
-                            <td> {{key['First Name']}} {{key['Last Name']}}</td>
-                            <td> {{key['Address']}}</td>
-                            <td> {{mapping[key['Ward No']]}}</td>
-                            <td> {{key['Age']}}</td>
-                            <td><img src="../static/PurpleAdmin-Free-Admin-Template-master/images/{{key['UID']}}.jpg"></td>
-                            
+                                <td>{{key['UID']}}</td>
+                                <td> {{key['First Name']}} {{key['Last Name']}}</td>
+                                <td> {{key['Address']}}</td>
+                                <td> {{mapping[key['Ward No']]}}</td>
+                                <td> {{key['Age']}}</td>
+                                <td><img src="../static/PurpleAdmin-Free-Admin-Template-master/images/{{key['UID']}}.jpg"></td>
+                                <td>
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong">Info
+                                    </button>
+                                </td>
                             </tr>
-                        
                       </div>
                       {% endfor %}
-                      
-                      
-                    
                   </table>
                 </div>
               </div>
             </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Candidate Recent Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+{#        <table class="table">#}
+{#            {% for subresult in result %}#}
+{#              <tr>#}
+{#                  <td><h6>{{subresult[0]}}</h6></td>#}
+{#                  <td><a href="{{ subresult[1] }}">More</a></td>#}
+{#                </tr>#}
+{#          {% endfor %}#}
+{#          </table>#}
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         </div>
     </div>
        <footer class="footer">
