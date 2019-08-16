@@ -2,5 +2,7 @@
     "python.pythonPath": "C:\\Users\\SHOBHIT KUMAR.SHOBHIT-PC.000\\.conda\\envs\\test\\python.exe",
     "appService.zipIgnorePattern": [
         ".vscode{,/**}"
-    ]
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/1f245c96-f933-479e-95fc-28b533e3f7d9/resourceGroups/rvvotingwebapp/providers/Microsoft.Web/sites/rvvoting",
+    "appService.deploySubpath": ""
 }
