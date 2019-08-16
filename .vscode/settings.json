@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "C:\\Users\\SHOBHIT KUMAR.SHOBHIT-PC.000\\.conda\\envs\\test\\python.exe"
+    "python.pythonPath": "C:\\Users\\SHOBHIT KUMAR.SHOBHIT-PC.000\\.conda\\envs\\test\\python.exe",
+    "appService.zipIgnorePattern": [
+        ".vscode{,/**}"
+    ]
 }
