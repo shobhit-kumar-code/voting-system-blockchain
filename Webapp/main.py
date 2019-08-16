@@ -9,7 +9,7 @@ import requests
 from vote_system import Voting
 import pdb
 from azurenews import NewsSearch
-import cv2
+# import cv2
 
 
 # app.secret_key = 'development'
