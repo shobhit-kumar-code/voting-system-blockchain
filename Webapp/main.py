@@ -4,12 +4,13 @@ import json
 from flask import Flask, render_template, request,redirect
 import sys
 from werkzeug import secure_filename
+import pymongo
+import requests
 from vote_system import Voting
 import pdb
 from azurenews import NewsSearch
 import cv2
-import pymongo
-import requests
+
 
 # app.secret_key = 'development'
 session={}
