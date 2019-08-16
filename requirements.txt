@@ -5,4 +5,4 @@ azure-cognitiveservices-search-newssearch==1.0.0
 azure-cognitiveservices-search-nspkg==3.0.1
 azure-common==1.1.23
 azure-nspkg==3.0.2
-opencv==4.1.1
+opencv-python==4.1.0.25
