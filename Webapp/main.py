@@ -15,6 +15,7 @@ import cv2
 # app.secret_key = 'development'
 session={}
 applid=4
+apiwaalaurl="https://voting-7ebuci.azurewebsites.net"
 candidateRoleId=7
 voteWorkflowPropertyId=7
 currentuserid=-1
@@ -285,7 +286,7 @@ def voted():
     # current_votes=mycol.find_one({"UID":whom})['vote_count']
     # mycol.find_one_and_update({"UID":whom},{'$inc':{"vote_count":1}})
     apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
-    url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts/"+str(candidate_uid)+"/actions"
+    url=apiwaalaurl+"/api/v1/contracts/"+str(candidate_uid)+"/actions"
     # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
     headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json'
     # import pdb; pdb.set_trace()
@@ -294,7 +295,7 @@ def voted():
   
 
   # apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
-  # url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts/"+str(candidate_uid)+"/actions"
+  # url=apiwaalaurl+"/api/v1/contracts/"+str(candidate_uid)+"/actions"
   # # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   # headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
   
@@ -320,7 +321,7 @@ def voted():
 
 def getyourroleid():
   global currentuserid
-  url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/applications/"+str(applid)+"/roleAssignments"
+  url=apiwaalaurl+"/api/v1/applications/"+str(applid)+"/roleAssignments"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
   
@@ -344,7 +345,7 @@ def getyourroleid():
 
 def getusertype():
   global currentuserid
-  url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/users/me"
+  url=apiwaalaurl+"/api/v1/users/me"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
   responsefromapi = requests.get(url,headers=headers)
@@ -366,7 +367,7 @@ def getusertype():
   else:
       return 'failed at getting user type'
 def getvotecount():
-  url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts?workflowId=4"
+  url=apiwaalaurl+"/api/v1/contracts?workflowId=4"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
   
@@ -424,7 +425,7 @@ def launchcandidate():
       ]
     }
   print(apidata)
-  url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts?workflowId=4&contractCodeId=4&connectionId=1"
+  url=apiwaalaurl+"/api/v1/contracts?workflowId=4&contractCodeId=4&connectionId=1"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
   
@@ -451,7 +452,7 @@ def reguser():
       "emailAddress": request.form['emailid']
     }
   print(apidata)
-  url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/users"
+  url=apiwaalaurl+"/api/v1/users"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
   
@@ -467,7 +468,7 @@ def reguser():
           "applicationRoleId": 7 #role for candidate
         }
       print(apidata)
-      url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/applications/"+str(applid)+"/roleAssignments"
+      url=apiwaalaurl+"/api/v1/applications/"+str(applid)+"/roleAssignments"
       # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
       headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}
 
@@ -518,7 +519,7 @@ def shobhit_voted():
   candidate_uid=dic[str(candidate_uid)]
 
   apidata={"workflowFunctionID": 9,"workflowActionParameters": []}
-  url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts/"+str(candidate_uid)+"/actions"
+  url=apiwaalaurl+"/api/v1/contracts/"+str(candidate_uid)+"/actions"
   # params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(session['auth_token'])}#{'Content-Type': 'application/json',
   
@@ -542,7 +543,7 @@ def shobhit1():
 
   apidata={"workflowFunctionID": 1,"workflowActionParameters": [  { "name": "message", "value": "lalala", "workflowFunctionParameterId": 3 } ] }
   auth_token=data['id_token']
-  url="https://votemaadi-4bm4ew-api.azurewebsites.net/api/v1/contracts"
+  url=apiwaalaurl+"/api/v1/contracts"
   params={'workflowId':1,'contractCodeId':1,'connectionId':1}
   headers={'Authorization': 'Bearer {0}'.format(auth_token)}#{'Content-Type': 'application/json',
   
